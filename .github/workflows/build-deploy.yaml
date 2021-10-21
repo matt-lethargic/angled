@@ -41,7 +41,7 @@ jobs:
 
       - name: Terraform Plan
         id: plan
-        run: terraform plan -var environment="test" -no-color -out tfplan
+        run: terraform plan -no-color -out tfplan
 
       - name: Terraform Apply
         id: Apply
@@ -70,8 +70,18 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: npm ci and npm run build
+      - name: 'Build and Test'
         run: |
           npm ci
           npm run build:ci
+
+      - name: Cache Dist
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-dist
+        with:
+          path: ~/dist
+          key: build-dist-${{ env.GITHUB_RUN_NUMBER }}
+          restore-keys: |
+            build-dist-${{ env.GITHUB_RUN_NUMBER }}
 

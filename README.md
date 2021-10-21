@@ -1,3 +1,5 @@
+[![build-deploy](https://github.com/matt-lethargic/angled/actions/workflows/build-deploy.yaml/badge.svg)](https://github.com/matt-lethargic/angled/actions/workflows/build-deploy.yaml)
+
 # Angled
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.2.11.
