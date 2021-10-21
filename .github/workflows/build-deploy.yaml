@@ -73,12 +73,12 @@ jobs:
           npm run build:ci
       
       - name : ls
-        run : "ls -al ./dist"
+        run : "ls -al ./dist/Angled"
 
       - name: Cache Dist
         uses: actions/cache@v2
         with:
-          path: ./dist
+          path: ./dist/Angled
           key: build-dist-${{ github.run_id }}
 
   deploy:
@@ -96,7 +96,7 @@ jobs:
         uses: actions/cache@v2
         id: cache-dist
         with:
-          path: ./dist
+          path: ./dist/Angled
           key: build-dist-${{ github.run_id }}
 
       - name: Check coverage tolerance
@@ -108,14 +108,14 @@ jobs:
 
       - name : ls
         run : |
-          "ls -al ./dist"
+          "ls -al ./dist/Angled"
 
       - name: Upload to blob storage
         uses: azure/CLI@v1
         with:
           azcliversion: latest
           inlineScript: |
-              az storage blob upload-batch --account-name angledsa --auth-mode key -d '$web' -s './dist' --pattern "*.*"
+              az storage blob upload-batch --account-name angledsa --auth-mode key -d '$web' -s './dist/Angled' --pattern "*.*"
 
       # - name: Purge CDN endpoint
       #   uses: azure/CLI@v1
