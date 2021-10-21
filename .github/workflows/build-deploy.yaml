@@ -108,9 +108,9 @@ jobs:
         uses: azure/CLI@v1
         if: steps.cache-dist.outputs.cache-hit == 'true'
         with:
-          azcliversion: 2.0.72
+          azcliversion: latest
           inlineScript: |
-              az storage blob upload-batch --account-name angledsa --auth-mode key -d '$web' -s ~/dist
+              az storage blob upload-batch --account-name angledsa --auth-mode key -d '$web' -s '~/dist' --pattern "*.*"
 
       # - name: Purge CDN endpoint
       #   uses: azure/CLI@v1
