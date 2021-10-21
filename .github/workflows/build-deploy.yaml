@@ -74,13 +74,9 @@ jobs:
 
       - name: Cache Dist
         uses: actions/cache@v2
-        env:
-          cache-name: cache-dist
         with:
           path: ~/dist
           key: build-dist-${{ github.run_id }}
-          restore-keys: |
-            build-dist-${{ github.run_id }}
 
   deploy:
     name: 'Deploy - Test'
@@ -96,13 +92,9 @@ jobs:
       - name: Cache Dist
         uses: actions/cache@v2
         id: cache-dist
-        env:
-          cache-name: cache-dist
         with:
           path: ~/dist
           key: build-dist-${{ github.run_id }}
-          restore-keys: |
-            build-dist-${{ github.run_id }}
 
       - name: Check coverage tolerance
         if: ${{ steps.cache-dist.outputs.cache-hit == 'false' }}
@@ -113,14 +105,14 @@ jobs:
 
       - name : ls
         # working-directory : "."
-        run : "ls -la ~/work/angled/angled"
+        run : "ls -la ~/"
 
       - name: Upload to blob storage
         uses: azure/CLI@v1
         with:
           azcliversion: latest
           inlineScript: |
-              az storage blob upload-batch --account-name angledsa --auth-mode key -d '$web' -s '~/work/angled/angled' --pattern "*.*"
+              az storage blob upload-batch --account-name angledsa --auth-mode key -d '$web' -s 'dist' --pattern "*.*"
 
       # - name: Purge CDN endpoint
       #   uses: azure/CLI@v1
