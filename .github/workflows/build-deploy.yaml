@@ -78,7 +78,7 @@ jobs:
           cache-name: cache-dist
         with:
           path: ~/dist
-          key: build-dist-${{ github.run.number }}
+          key: build-dist-${{ github.run_id }}
           restore-keys: |
-            build-dist-${{ github.run.number }}
+            build-dist-${{ github.run_id }}
 
