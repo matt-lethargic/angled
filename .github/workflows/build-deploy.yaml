@@ -106,10 +106,6 @@ jobs:
           script: |
             core.setFailed('Cache not found')
 
-      - name : ls
-        run : |
-          "ls -al ./dist/Angled"
-
       - name: Upload to blob storage
         uses: azure/CLI@v1
         with:
