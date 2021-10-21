@@ -71,9 +71,6 @@ jobs:
         run: |
           npm ci
           npm run build:ci
-      
-      - name : ls
-        run : "ls -al ./dist/Angled"
 
       - name: Cache Dist
         uses: actions/cache@v2
