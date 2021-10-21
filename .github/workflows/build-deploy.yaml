@@ -113,14 +113,14 @@ jobs:
 
       - name : ls
         # working-directory : "."
-        run : "ls -la ~/dev"
+        run : "ls -la ~/work/angled/angled"
 
       - name: Upload to blob storage
         uses: azure/CLI@v1
         with:
           azcliversion: latest
           inlineScript: |
-              az storage blob upload-batch --account-name angledsa --auth-mode key -d '$web' -s '~/dist' --pattern "*.*"
+              az storage blob upload-batch --account-name angledsa --auth-mode key -d '$web' -s '~/work/angled/angled' --pattern "*.*"
 
       # - name: Purge CDN endpoint
       #   uses: azure/CLI@v1
