@@ -98,7 +98,7 @@ jobs:
         env:
           cache-name: cache-dist
         with:
-          path: ~/dist
+          path: ./dist
           key: build-dist-${{ github.run_id }}
           restore-keys: |
             build-dist-${{ github.run_id }}
@@ -108,7 +108,7 @@ jobs:
         with:
           azcliversion: 2.0.72
           inlineScript: |
-              az storage blob upload-batch --account-name angledsa --auth-mode key -d '$web' -s ~/dist
+              az storage blob upload-batch --account-name angledsa --auth-mode key -d '$web' -s ./dist
 
       # - name: Purge CDN endpoint
       #   uses: azure/CLI@v1
