@@ -113,7 +113,7 @@ jobs:
 
       - name : ls
         # working-directory : "."
-        run : "ls -la "
+        run : "ls -la ~/dev"
 
       - name: Upload to blob storage
         uses: azure/CLI@v1
