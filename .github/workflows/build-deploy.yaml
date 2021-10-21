@@ -104,9 +104,19 @@ jobs:
           restore-keys: |
             build-dist-${{ github.run_id }}
 
+      - name: Check coverage tolerance
+        if: ${{ steps.cache-dist.outputs.cache-hit == 'false' }}
+        uses: actions/github-script@v3
+        with:
+          script: |
+            core.setFailed('Cache not found')
+
+      - name : ls
+        # working-directory : "."
+        run : "ls -la "
+
       - name: Upload to blob storage
         uses: azure/CLI@v1
-        if: steps.cache-dist.outputs.cache-hit == 'true'
         with:
           azcliversion: latest
           inlineScript: |
