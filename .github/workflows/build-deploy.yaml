@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
     
 jobs:
-  terraform-test:
+  terraform:
     name: 'Terraform'
     runs-on: 'ubuntu-latest'
     env:
@@ -82,3 +82,42 @@ jobs:
           restore-keys: |
             build-dist-${{ github.run_id }}
 
+  deploy:
+    name: 'Deploy - Test'
+    runs-on: 'ubuntu-latest'
+    environment: test
+    needs: [terraform, build-test]
+
+    steps:
+      - uses: Azure/login@v1.1
+        with:
+          creds: '{"clientId":"${{ secrets.AZURE_AD_CLIENT_ID }}","clientSecret":"${{ secrets.AZURE_AD_CLIENT_SECRET }}","subscriptionId":"${{ secrets.AZURE_SUBSCRIPTION_ID }}","tenantId":"${{ secrets.AZURE_AD_TENANT_ID }}"}'
+      
+      - name: Cache Dist
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-dist
+        with:
+          path: ~/dist
+          key: build-dist-${{ github.run_id }}
+          restore-keys: |
+            build-dist-${{ github.run_id }}
+
+      - name: Upload to blob storage
+        uses: azure/CLI@v1
+        with:
+          azcliversion: 2.0.72
+          inlineScript: |
+              az storage blob upload-batch --account-name angledsa --auth-mode key -d '$web' -s ~/dist
+
+      # - name: Purge CDN endpoint
+      #   uses: azure/CLI@v1
+      #   with:
+      #     azcliversion: 2.0.72
+      #     inlineScript: |
+      #       az network front-door purge-endpoint --content-paths  "/*" --name "CDN_ENDPOINT" --resource-group "RESOURCE_GROUP"
+
+      - name: logout
+        run: |
+              az logout
+        if: always()
